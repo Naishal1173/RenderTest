@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>PDF Document Chatbot</title>
+    <title>Gujarat Planning Regulation Assistant</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <meta name="description" content="AI-powered PDF document chatbot for instant answers">
+    <meta name="description" content="Expert AI assistant for Gujarat Planning Regulation Part II - Get instant answers about FSI, setbacks, building requirements">
     <meta name="theme-color" content="#667eea">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📄 PDF Document Chatbot</h1>
-            <p>Ask questions about your uploaded documents</p>
+            <h1>🏗️ Gujarat Planning Regulation Assistant</h1>
+            <p>Official Gujarat Planning Regulation Part II - Expert AI Assistant</p>
         </div>
 
         <div class="chat-container">
@@ -21,24 +21,27 @@
                 <div class="message bot">
                     <div class="message-avatar">🤖</div>
                     <div class="message-content">
-                        <strong>Welcome to your PDF Document Assistant!</strong><br><br>
-                        I'm here to help you find information from your uploaded documents. I only use information from your PDFs - no external knowledge or hallucination.<br><br>
-                        <strong>How to get the best answers:</strong><br>
-                        • Ask specific questions about your documents<br>
-                        • Reference table numbers, sections, or specific topics<br>
-                        • Use clear, descriptive language<br><br>
-                        <em>Ready to help! What would you like to know?</em>
+                        <strong>Welcome to Gujarat Planning Regulation Assistant!</strong><br><br>
+                        I'm here to help you with questions about the <strong>NEW Gujarat-PART II PLANNING REGULATION</strong> document. I provide accurate answers based only on the official regulation content.<br><br>
+                        <strong>Example Questions You Can Ask:</strong><br>
+                        • What are the FSI requirements for residential buildings?<br>
+                        • What is the minimum plot size for industrial development?<br>
+                        • What are the setback requirements for commercial buildings?<br>
+                        • What does Table 6.50 specify about building areas?<br>
+                        • What are the height restrictions for different zones?<br>
+                        • What are the parking requirements for different building types?<br><br>
+                        <em>Ask me anything about Gujarat Planning Regulations!</em>
                     </div>
                 </div>
             </div>
 
             <div class="loading" id="loading">
-                <div class="loading-dots">🤖 Analyzing documents...</div>
+                <div class="loading-dots">🏗️ Analyzing Gujarat Planning Regulations...</div>
             </div>
         </div>
 
         <div class="input-container">
-            <input type="text" id="questionInput" class="input-field" placeholder="Ask about your documents..." onkeypress="handleKeyPress(event)" autocomplete="off">
+            <input type="text" id="questionInput" class="input-field" placeholder="Ask about Gujarat Planning Regulations..." onkeypress="handleKeyPress(event)" autocomplete="off">
             <button onclick="askQuestion()" class="send-button" id="sendButton">Send</button>
         </div>
     </div>

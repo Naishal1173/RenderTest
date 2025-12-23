@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Web Frontend for PDF-based Chatbot
-Beautiful web interface using the robust chatbot backend
-Works with any PDF data processed through AnythingLLM
+Gujarat Planning Regulation Assistant - Web Frontend
+Expert AI assistant for NEW Gujarat-PART II PLANNING REGULATION
+Provides accurate answers based on official regulation content
 """
 
 from flask import Flask, render_template, request, jsonify
@@ -77,12 +77,12 @@ def health_check():
     return jsonify({
         'status': 'healthy',
         'chatbot_ready': chatbot is not None,
-        'service': 'PDF Document Chatbot'
+        'service': 'Gujarat Planning Regulation Assistant'
     })
 
 if __name__ == '__main__':
-    print("🚀 Starting PDF Document Chatbot Web Frontend...")
-    print("🤖 Robust chatbot with rate limit handling")
+    print("🚀 Starting Gujarat Planning Regulation Assistant...")
+    print("🏗️ Expert AI for Gujarat Planning Regulations")
     
     # Get port from environment (for deployment) or use 5000 for local
     port = int(os.environ.get('PORT', 5000))
