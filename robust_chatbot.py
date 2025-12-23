@@ -18,7 +18,7 @@ class RobustChatbot:
     
     def __init__(self):
         self.gemini_api_key = "AIzaSyBjRzi23AIhZF5BSXczgFY3jDXRkXfINCw"
-        self.gemini_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={self.gemini_api_key}"
+        self.gemini_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key={self.gemini_api_key}"
         self.chunks = []
         self.last_api_call = 0
         self.api_delay = 2  # 2 seconds between API calls
