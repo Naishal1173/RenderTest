@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>PDF Document Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="description" content="AI-powered PDF document chatbot for instant answers">
+    <meta name="theme-color" content="#667eea">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 PDF Document Chatbot</h1>
+            <p>Ask questions about your uploaded documents</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="messages" id="messages">
+                <div class="message bot">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <strong>Welcome to your PDF Document Assistant!</strong><br><br>
+                        I'm here to help you find information from your uploaded documents. I only use information from your PDFs - no external knowledge or hallucination.<br><br>
+                        <strong>How to get the best answers:</strong><br>
+                        • Ask specific questions about your documents<br>
+                        • Reference table numbers, sections, or specific topics<br>
+                        • Use clear, descriptive language<br><br>
+                        <em>Ready to help! What would you like to know?</em>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="loading-dots">🤖 Analyzing documents...</div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="questionInput" class="input-field" placeholder="Ask about your documents..." onkeypress="handleKeyPress(event)" autocomplete="off">
+            <button onclick="askQuestion()" class="send-button" id="sendButton">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function addMessage(content, isUser = false) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            // Format bot messages with basic markdown-like styling
+            let formattedContent = content;
+            if (!isUser) {
+                // Convert markdown-like formatting to HTML
+                formattedContent = content
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Bold
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')              // Italic
+                    .replace(/^### (.*$)/gm, '<h4>$1</h4>')           // H4 headers
+                    .replace(/^## (.*$)/gm, '<h3>$1</h3>')            // H3 headers
+                    .replace(/^# (.*$)/gm, '<h2>$1</h2>')             // H2 headers
+                    .replace(/^• (.*$)/gm, '<li>$1</li>')             // Bullet points
+                    .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')         // Numbered lists
+                    .replace(/---/g, '<hr>')                          // Horizontal rules
+                    .replace(/\n\n/g, '<br><br>')                     // Double line breaks
+                    .replace(/\n/g, '<br>');                          // Single line breaks
+                
+                // Wrap consecutive <li> elements in <ul>
+                formattedContent = formattedContent.replace(/(<li>.*?<\/li>)(\s*<li>.*?<\/li>)*/g, '<ul>$&</ul>');
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${isUser ? '🧑' : '🤖'}</div>
+                <div class="message-content">
+                    ${formattedContent}
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('sendButton').disabled = show;
+        }
+
+        async function askQuestion() {
+            const input = document.getElementById('questionInput');
+            const question = input.value.trim();
+            
+            if (!question) return;
+            
+            // Add user message
+            addMessage(question, true);
+            input.value = '';
+            
+            // Show loading
+            showLoading(true);
+            
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: question })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage(data.answer, false);
+                } else {
+                    addMessage(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                addMessage('❌ Network error. Please try again.', false);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                askQuestion();
+            }
+        }
+
+        // Focus on input when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('questionInput').focus();
+        });
+
+        // Auto-resize for mobile keyboards
+        window.addEventListener('resize', function() {
+            const messages = document.getElementById('messages');
+            messages.scrollTop = messages.scrollHeight;
+        });
+
+        // Prevent zoom on iOS
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
